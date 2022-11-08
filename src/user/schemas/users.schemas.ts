@@ -4,10 +4,10 @@ import { Document } from 'mongoose';
 @Schema({ timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
 export class User extends Document {
   @Prop({ required: true, unique: true })
-  email: string;
+  email!: string;
 
   @Prop({ required: true })
-  password: string;
+  password!: string;
 
   @Prop({ default: 'normal' })
   userType: 'normal' | 'seller' | 'admin';
