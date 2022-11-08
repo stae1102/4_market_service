@@ -14,5 +14,16 @@ export class User extends Document {
 
   @Prop()
   deletedAt: null | Date;
+
+  readonly protectedData: {
+    email: string;
+    name: string;
+  };
 }
 export const UserSchema = SchemaFactory.createForClass(User);
+UserSchema.virtual('protectedData').get(function (this: User) {
+  return {
+    email: this.email,
+    userType: this.userType,
+  };
+});
