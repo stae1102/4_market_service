@@ -19,4 +19,8 @@ export class UsersRepository {
       email,
     });
   }
+
+  async findById(id: string): Promise<User> {
+    return await this.userModel.findById({ _id: id });
+  }
 }
