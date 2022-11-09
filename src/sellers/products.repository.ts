@@ -26,4 +26,10 @@ export class ProductsRepository {
       ...updateProductDto,
     });
   }
+
+  async delete(_id: Types.ObjectId) {
+    return await this.productsModel.findOneAndUpdate(_id, {
+      deletedAt: new Date(),
+    });
+  }
 }

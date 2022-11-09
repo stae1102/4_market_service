@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Param,
   Patch,
   Post,
@@ -63,5 +64,16 @@ export class SellersController {
       updateProductDto,
       user._id,
     );
+  }
+
+  @Delete('product/:productId')
+  @Role('SELLER', 'ADMIN')
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  async removeProduct(
+    @Param('productId') productId: Types.ObjectId,
+    @User() user: Users,
+  ) {
+    return this.sellersService.deleteProduct(productId, user._id);
   }
 }

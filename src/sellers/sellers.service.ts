@@ -65,4 +65,20 @@ export class SellersService {
       updateProductDto,
     );
   }
+
+  async deleteProduct(productId: Types.ObjectId, userId: Types.ObjectId) {
+    const seller = await this.usersRepository.findById(userId);
+    const product = await this.productsRepository.findById(productId);
+    const SellerId = seller._id.toString();
+    const productOwnerId = product.SellerId.toString();
+
+    if (SellerId !== productOwnerId) {
+      throw new ForbiddenException({
+        statusCode: HttpStatus.FORBIDDEN,
+        message: ['해당 셀러의 상품이 아닙니다.'],
+      });
+    }
+
+    return this.productsRepository.delete(productId);
+  }
 }
