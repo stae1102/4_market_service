@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Users } from './schemas/users.schemas';
 
@@ -22,5 +22,13 @@ export class UsersRepository {
 
   async findById(id: string): Promise<Users> {
     return await this.userModel.findById({ _id: id });
+  }
+
+  async findByIdAndUpdateToSELLER(_id: Types.ObjectId) {
+    return await this.userModel.findByIdAndUpdate(
+      _id,
+      { $addToSet: { role: 'SELLER' } },
+      { new: true },
+    );
   }
 }
