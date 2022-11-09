@@ -1,4 +1,12 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { Types } from 'mongoose';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Role } from '../common/decorators/role.decorator';
@@ -6,6 +14,7 @@ import { User } from '../common/decorators/user.decorator';
 import { Users } from '../users/schemas/users.schemas';
 import { RegisterProductDto } from './dto/register-product.dto';
 import { RegisterSellerDto } from './dto/register-seller.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 import { SellersService } from './sellers.service';
 
 @Controller('sellers')
@@ -36,6 +45,22 @@ export class SellersController {
   ) {
     return await this.sellersService.registerProduct(
       registerProductDto,
+      user._id,
+    );
+  }
+
+  @Patch('product/:productId')
+  @Role('SELLER')
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  async updateProduct(
+    @Param('productId') productId: Types.ObjectId,
+    @Body() updateProductDto: UpdateProductDto,
+    @User() user: Users,
+  ) {
+    return this.sellersService.updateProduct(
+      productId,
+      updateProductDto,
       user._id,
     );
   }

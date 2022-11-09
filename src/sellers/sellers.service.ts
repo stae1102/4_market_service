@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpStatus, Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { UsersRepository } from '../users/users.repository';
 import { RegisterProductDto } from './dto/register-product.dto';
 import { RegisterSellerDto } from './dto/register-seller.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductsRepository } from './products.repository';
 import { Products } from './schemas/products.schemas';
 import { Sellers } from './schemas/sellers.schema';
@@ -40,5 +41,28 @@ export class SellersService {
       ...registerProductDto,
       SellerId,
     } as Products);
+  }
+
+  async updateProduct(
+    productId: Types.ObjectId,
+    updateProductDto: UpdateProductDto,
+    _id: Types.ObjectId,
+  ) {
+    const seller = await this.usersRepository.findById(_id);
+    const product = await this.productsRepository.findById(productId);
+    const SellerId = seller._id.toString();
+    const productOwnerId = product.SellerId.toString();
+
+    if (SellerId !== productOwnerId) {
+      throw new ForbiddenException({
+        statusCode: HttpStatus.FORBIDDEN,
+        message: ['해당 셀러의 상품이 아닙니다.'],
+      });
+    }
+
+    return await this.productsRepository.findByIdAndUpdate(
+      productId,
+      updateProductDto,
+    );
   }
 }
