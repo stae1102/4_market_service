@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 import UserRole from './enums/user-role.enum';
 
 @Schema({ timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
-export class User extends Document {
+export class Users extends Document {
   @Prop({ required: true, unique: true })
   email!: string;
 
@@ -21,8 +21,8 @@ export class User extends Document {
     role: string;
   };
 }
-export const UserSchema = SchemaFactory.createForClass(User);
-UserSchema.virtual('protectedData').get(function (this: User) {
+export const UsersSchema = SchemaFactory.createForClass(Users);
+UsersSchema.virtual('protectedData').get(function (this: Users) {
   return {
     email: this.email,
     role: this.role,

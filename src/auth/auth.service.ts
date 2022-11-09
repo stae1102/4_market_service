@@ -2,7 +2,7 @@ import { ForbiddenException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersRepository } from '../users/users.repository';
 import * as bcrypt from 'bcrypt';
-import { User } from '../users/schemas/users.schemas';
+import { Users } from '../users/schemas/users.schemas';
 
 @Injectable()
 export class AuthService {
@@ -34,8 +34,8 @@ export class AuthService {
     }
   }
 
-  async signIn(user: User) {
-    const payload = { email: user.email, role: user.role };
+  async signIn(user: Users) {
+    const payload = { _id: user._id, email: user.email, role: user.role };
     return {
       accessToken: this.jwtService.sign(payload),
     };
