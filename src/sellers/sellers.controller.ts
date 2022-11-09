@@ -50,7 +50,7 @@ export class SellersController {
   }
 
   @Patch('product/:productId')
-  @Role('SELLER')
+  @Role('SELLER', 'ADMIN')
   @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
   async updateProduct(
