@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { UsersRepository } from '../users/users.repository';
+import { RegisterProductDto } from './dto/register-product.dto';
 import { RegisterSellerDto } from './dto/register-seller.dto';
 import { Sellers } from './schemas/sellers.schema';
 import { SellersRepository } from './sellers.repository';
@@ -22,4 +23,9 @@ export class SellersService {
       OwnerId: _id,
     } as Sellers);
   }
+
+  async registerProduct(
+    registerProductDto: RegisterProductDto,
+    _id: Types.ObjectId,
+  ) {}
 }
