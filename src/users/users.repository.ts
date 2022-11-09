@@ -20,8 +20,8 @@ export class UsersRepository {
     });
   }
 
-  async findById(id: string): Promise<Users> {
-    return await this.userModel.findById({ _id: id });
+  async findById(_id: Types.ObjectId): Promise<Users> {
+    return await this.userModel.findById({ _id });
   }
 
   async findByIdAndUpdateToSELLER(_id: Types.ObjectId) {
