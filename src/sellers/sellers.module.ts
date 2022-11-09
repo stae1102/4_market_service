@@ -5,6 +5,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Sellers, SellersSchema } from './schemas/sellers.schema';
 
 @Module({
+  imports: [
+    MongooseModule.forFeature([{ name: Sellers.name, schema: SellersSchema }]),
+  ],
   controllers: [SellersController],
   providers: [SellersService],
 })
