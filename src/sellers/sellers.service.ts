@@ -3,6 +3,8 @@ import { Types } from 'mongoose';
 import { UsersRepository } from '../users/users.repository';
 import { RegisterProductDto } from './dto/register-product.dto';
 import { RegisterSellerDto } from './dto/register-seller.dto';
+import { ProductsRepository } from './products.repository';
+import { Products } from './schemas/products.schemas';
 import { Sellers } from './schemas/sellers.schema';
 import { SellersRepository } from './sellers.repository';
 
@@ -11,6 +13,7 @@ export class SellersService {
   constructor(
     private readonly sellersRepository: SellersRepository,
     private readonly usersRepository: UsersRepository,
+    private readonly productsRepository: ProductsRepository,
   ) {}
 
   async registerSeller(
@@ -27,5 +30,15 @@ export class SellersService {
   async registerProduct(
     registerProductDto: RegisterProductDto,
     _id: Types.ObjectId,
-  ) {}
+  ) {
+    // 1. 셀러 id 추출
+    const seller = await this.usersRepository.findById(_id);
+    const SellerId = seller._id;
+
+    // 2. 상품 등록과 함께 셀러 id 저장
+    return await this.productsRepository.create({
+      ...registerProductDto,
+      SellerId,
+    } as Products);
+  }
 }
