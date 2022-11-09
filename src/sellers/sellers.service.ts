@@ -14,7 +14,7 @@ export class SellersService {
   ) {
     return await this.sellersRepository.create({
       ...registerSellerDto,
-      _id,
+      OwnerId: _id,
     } as Sellers);
   }
 }
