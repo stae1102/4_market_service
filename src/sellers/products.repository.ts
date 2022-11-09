@@ -8,4 +8,8 @@ export class ProductsRepository {
   constructor(
     @InjectModel(Products.name) private readonly productsModel: Model<Products>,
   ) {}
+
+  async create(products: Products) {
+    return await this.productsModel.create(products);
+  }
 }
