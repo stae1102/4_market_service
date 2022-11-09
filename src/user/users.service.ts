@@ -17,12 +17,12 @@ export class UsersService {
       });
     }
 
-    const { email, password, userType } = createUserDto;
+    const { email, password, role } = createUserDto;
     const hashedPassword = await bcrypt.hash(password, this.SALT_ROUNDS);
     const user = await this.usersRepository.create({
       email,
       password: hashedPassword,
-      userType,
+      role,
     });
     return user.protectedData;
   }
