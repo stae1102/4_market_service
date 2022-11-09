@@ -1,8 +1,8 @@
 import { ForbiddenException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersRepository } from '../user/users.repository';
+import { UsersRepository } from '../users/users.repository';
 import * as bcrypt from 'bcrypt';
-import { User } from '../user/schemas/users.schemas';
+import { User } from '../users/schemas/users.schemas';
 
 @Injectable()
 export class AuthService {
