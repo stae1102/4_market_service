@@ -21,6 +21,9 @@ export class Products extends Document {
   @Prop({ default: () => new Date().setDate(new Date().getDate() + 7) })
   orderDeadline?: Date;
 
+  @Prop()
+  deletedAt: null | Date;
+
   @Prop({ type: Types.ObjectId, ref: 'Seller._id' })
   SellerId: Types.ObjectId;
 }
