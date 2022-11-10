@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { FilterQuery, Model, SortOrder, Types } from 'mongoose';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Products } from './schemas/products.schemas';
 
@@ -33,9 +33,26 @@ export class ProductsRepository {
     });
   }
 
-  async findMany(query, sortQuery, page) {
+  async findMany(
+    whereQuery: FilterQuery<Products>[],
+    sortQuery: { [key: string]: SortOrder },
+    page: number,
+  ): Promise<Products[]> {
     return await this.productsModel
-      .find({ ...query }, { name: true }, { take: 10, skip: page })
+      .find(
+        {
+          $and: whereQuery,
+        },
+        {
+          name: true,
+          description: true,
+          price: true,
+          category: true,
+          nation: true,
+          orderDeadline: true,
+        },
+        { take: 10, skip: 10 * (page - 1) },
+      )
       .sort(sortQuery);
   }
 }

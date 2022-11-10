@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { SortOrder } from 'mongoose';
 import { ProductsRepository } from '../sellers/products.repository';
 import SortType from './enums/sortType.enum';
 
@@ -8,20 +9,29 @@ export class ProductsService {
 
   async getProducts(query) {
     const { page, sortType, category, nation, inputText } = query;
-    let sortQuery: object;
+    let sortQuery: { [key: string]: SortOrder };
 
     switch (sortType) {
       case SortType.RECENT:
-        sortQuery = { createdAt: 'DESC' };
+        sortQuery = { createdAt: 'desc' };
         break;
       case SortType.ORDERDEADLINE_DESC:
-        sortQuery = { orderDeadline: 'DESC' };
+        sortQuery = { orderDeadline: 'desc' };
         break;
     }
-    return await this.productsRepository.findMany(
-      { category, nation },
-      sortQuery,
-      page,
-    );
+
+    const whereQuery = [];
+    if (category) {
+      whereQuery.push({ category: { $in: category } });
+    } else {
+      whereQuery.push({});
+    }
+    if (nation) {
+      whereQuery.push({ nation: { $in: nation } });
+    } else {
+      whereQuery.push({});
+    }
+
+    return await this.productsRepository.findMany(whereQuery, sortQuery, page);
   }
 }
