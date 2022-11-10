@@ -1,5 +1,4 @@
 import { Transform } from 'class-transformer';
-import { IsString } from 'class-validator';
 import SortType from '../enums/sortType.enum';
 
 export class InquiryQuery {
