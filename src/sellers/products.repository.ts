@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model, SortOrder, Types } from 'mongoose';
+import { PAGE_CONTENTS } from '../common/constants';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Products } from './schemas/products.schemas';
 
@@ -51,7 +52,7 @@ export class ProductsRepository {
           nation: true,
           orderDeadline: true,
         },
-        { take: 10, skip: 10 * (page - 1) },
+        { take: PAGE_CONTENTS, skip: PAGE_CONTENTS * (page - 1) },
       )
       .sort(sortQuery);
   }
