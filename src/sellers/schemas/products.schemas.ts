@@ -3,7 +3,7 @@ import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
 export class Products extends Document {
-  @Prop({ required: true })
+  @Prop({ required: true, index: 'text' })
   name!: string;
 
   @Prop({ required: true })
