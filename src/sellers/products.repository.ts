@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { FilterQuery, Model, SortOrder, Types } from 'mongoose';
+import { PAGE_CONTENTS } from '../common/constants';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Products } from './schemas/products.schemas';
 
@@ -31,5 +32,28 @@ export class ProductsRepository {
     return await this.productsModel.findOneAndUpdate(_id, {
       deletedAt: new Date(),
     });
+  }
+
+  async findMany(
+    whereQuery: FilterQuery<Products>[],
+    sortQuery: { [key: string]: SortOrder },
+    page: number,
+  ): Promise<Products[]> {
+    return await this.productsModel
+      .find(
+        {
+          $and: whereQuery,
+        },
+        {
+          name: true,
+          description: true,
+          price: true,
+          category: true,
+          nation: true,
+          orderDeadline: true,
+        },
+        { take: PAGE_CONTENTS, skip: PAGE_CONTENTS * (page - 1) },
+      )
+      .sort(sortQuery);
   }
 }
