@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SortOrder } from 'mongoose';
+import { SortOrder, Types } from 'mongoose';
 import { ProductsRepository } from '../sellers/products.repository';
 import SortType from './enums/sortType.enum';
 import { InquiryQuery } from './types/query.type';
@@ -33,5 +33,9 @@ export class ProductsService {
     }
 
     return await this.productsRepository.findMany(whereQuery, sortQuery, page);
+  }
+
+  async getSpecificProduct(productId: Types.ObjectId) {
+    return await this.productsRepository.findById(productId);
   }
 }
