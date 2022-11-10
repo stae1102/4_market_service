@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { InquiryQuery } from './interfaces/query.interface';
+import { InquiryQuery } from './types/query.type';
 import { ProductsService } from './products.service';
 
 @Controller('products')
