@@ -32,4 +32,10 @@ export class ProductsRepository {
       deletedAt: new Date(),
     });
   }
+
+  async findMany(query, sortQuery, page) {
+    return await this.productsModel
+      .find({ ...query }, { name: true }, { take: 10, skip: page })
+      .sort(sortQuery);
+  }
 }
