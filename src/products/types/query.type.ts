@@ -7,11 +7,9 @@ export class InquiryQuery {
   sortType: SortType = SortType.RECENT;
 
   @Transform(({ value }) => value.split(','))
-  @IsString({ each: true })
   category?: string[];
 
   @Transform(({ value }) => value.split(','))
-  @IsString({ each: true })
   nation?: string[];
 
   inputText?: string;
